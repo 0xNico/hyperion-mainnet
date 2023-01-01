@@ -8,7 +8,7 @@ hyperion = "3A6B3ELfxPn7M1mbof29kr9KiejFzuY488T9aTYZi6Cs"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "mainnet"
+cluster = "https://rpc.helius.xyz/?api-key=3d091276-a077-4646-a685-5e4472adb627"
 wallet = "/home/nico/.config/solana/mainnet.json"
 
 [scripts]

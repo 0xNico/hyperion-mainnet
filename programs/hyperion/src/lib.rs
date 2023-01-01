@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*; // X.I - standard anchor import
-use std::mem::size_of; // X.I - standard size of import
+// use std::mem::size_of; // X.I - standard size of import
 
 declare_id!("3A6B3ELfxPn7M1mbof29kr9KiejFzuY488T9aTYZi6Cs"); // declare program ID
 
@@ -38,12 +38,11 @@ pub struct TagWallet<'info> {
               seeds = [b"tag".as_ref(), wallet.key().as_ref(), signer.key().as_ref()],
               bump,
               payer = signer,
-              space = size_of::<Tag>()
+              space = Tag::LEN
              )]
     pub tag: Account<'info, Tag>,
     #[account(mut)]
     pub signer: Signer<'info>,
-    /// CHECK: account wallet is safe because it simple stores the tagged wallet string.
     #[account(mut)]
     pub wallet: AccountInfo<'info>,
     pub system_program: Program<'info, System>,
@@ -57,6 +56,20 @@ pub struct Tag {
     pub label: String,
     pub votes: i64,
     pub timestamp: i64,
+}
+
+// X.E Discriminators for LEN
+const DISCRIMINATOR_LEN: usize = 8;
+const PUBKEY_LEN: usize = 32;
+const TIMESTAMP_LEN: usize = 8;
+const STRING_PREFIX: usize = 4;
+const MAX_TAG_LEN: usize = 22 * 4;
+
+impl Tag {
+    const LEN: usize = DISCRIMINATOR_LEN
+        + PUBKEY_LEN * 2
+        + TIMESTAMP_LEN
+        + STRING_PREFIX + MAX_TAG_LEN;
 }
 
 // X.E Errors
